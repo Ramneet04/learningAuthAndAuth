@@ -67,16 +67,16 @@ exports.login = async (req,res)=>{
         if(await bcrypt.compare(password,user.password)){
             //we create token using sign method.
             let token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "2h"});
-
             user = user.toObject();
             user.token = token;
             user.password = undefined;
 
             const options = {
-                expires: new Date( Date.now() + 3 * 24 * 60 * 60 * 1000),
+                expires: new Date( Date.now() + 30000),
                 httpOnly: true,
             }
-            return res.cookie("RamneetCookie", token, options).status(200).json({
+
+             res.cookie('rememberme', token, options).status(200).json({
                 success: true,
                 token,
                 user,

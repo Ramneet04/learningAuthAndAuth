@@ -4,11 +4,17 @@ require("dotenv").config();
 
 exports.auth = (req,res,next) =>{
     try {
-        const token = req.body.token;
-        if (!token) return res.status(401).json({
-            success: false,
-            message: "No Token Provided",
-        });
+        // Bearer ramneet  lets say isis the token we have relace Bearer  by "" so only token or ramneet is left its just the example...
+        //real token is like zvvzgcghhajklajhaha okkk
+        console.log("cookies -> ", req.cookies.rememberme);
+        const token = req.cookies.rememberme;
+        console.log(token)
+        if (!token){
+            return res.status(401).json({
+                success: false,
+                message: "No Token Provided",
+            });
+        }
 
         //verify token
         try {
@@ -26,7 +32,7 @@ exports.auth = (req,res,next) =>{
     } catch (error) {
         return res.status(401).json({
             success: false,
-            error: "Something went wrong while verifying the token",
+            error,
         })
     }
 }
